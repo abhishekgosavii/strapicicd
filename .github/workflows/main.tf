@@ -18,7 +18,7 @@ resource "aws_instance" "strapi_ec2" {
               sudo amazon-linux-extras install docker
               sudo service docker start
               sudo systemctl enable docker
-              sudo docker run -d -p 80:1337 abhishekgosavii2000/my-strapi-app:${var.image_tag}
+              sudo docker run -d -p 80:1337 abhishekgosavii2000/my-strapi-app:latest
               EOF
 }
 
