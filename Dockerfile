@@ -1,22 +1,20 @@
+# Use official Node.js image as the base image
 FROM node:18
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and package-lock.json to the container's working directory
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy app files
+# Copy the rest of your application files
 COPY . .
 
-# Build admin panel
-RUN npm run build
+# Expose the application port (adjust as necessary)
+EXPOSE 3000
 
-# Expose port
-EXPOSE 1337
-
-# Start Strapi
-CMD ["npm", "run", "develop"]
+# Start the application
+CMD ["npm", "start"]
