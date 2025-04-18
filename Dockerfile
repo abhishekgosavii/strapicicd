@@ -1,20 +1,23 @@
-# Use official Node.js image as the base image
-FROM node:18
+# ✅ Base image
+FROM node:18-alpine
 
-# Set the working directory inside the container
+# ✅ Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container's working directory
+# ✅ Copy package.json and package-lock.json (if available) to install dependencies
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# ✅ Install dependencies (production only for production environment)
+RUN npm install --production
 
-# Copy the rest of your application files
+# ✅ Copy the rest of the app (excluding files in .dockerignore)
 COPY . .
 
-# Expose the application port (adjust as necessary)
-EXPOSE 3000
+# ✅ Expose Strapi port
+EXPOSE 1337
 
-# Start the application
-CMD ["npm", "start"]
+# ✅ Build the app (optional: use if you're customizing admin panel)
+# RUN npm run build
+
+# ✅ Run Strapi in production mode (for production environment)
+CMD ["npm", "run", "start"]
