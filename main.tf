@@ -14,11 +14,11 @@ resource "aws_instance" "strapi_ec2" {
   key_name      = aws_ssm_parameter.key_name.value
   user_data = <<-EOF
               #!/bin/bash
-              sudo yum update -y
-              sudo amazon-linux-extras install docker
-              sudo service docker start
-              sudo systemctl enable docker
-              sudo docker run -d -p 80:1337 abhishekgosavii2000/my-strapi-app:latest
+              # sudo yum update -y
+              # sudo amazon-linux-extras install docker
+              # sudo service docker start
+              # sudo systemctl enable docker
+              # sudo docker run -d -p 80:1337 abhishekgosavii2000/my-strapi-app:latest
               EOF
 }
 
