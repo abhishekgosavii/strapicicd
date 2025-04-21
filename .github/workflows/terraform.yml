@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: Terraform CI/CD
 
 on:
@@ -6,6 +7,8 @@ on:
     branches:
       - main
 =======
+=======
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
 name: Terraform Deployment
 
 on:
@@ -15,11 +18,15 @@ on:
         description: 'The Docker image tag , ECR image URI'
         required: true
         type: string
+<<<<<<< HEAD
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
+=======
 >>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     env:
@@ -47,6 +54,8 @@ jobs:
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/
 =======
+=======
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
     
     env:
       WORKING_DIR: ./terraform
@@ -115,4 +124,7 @@ jobs:
 
 #       - name: Output Docker Image Tag
 #         run: echo "Docker Image: abhishekgosavii2000/my-strapi-app:${{ env.image_tag }}"
+<<<<<<< HEAD
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
+=======
 >>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
