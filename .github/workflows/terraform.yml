@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 name: Terraform CI/CD
 
 on:
   push:
     branches:
-      - main
-=======
-=======
->>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
+      - new1
 name: Terraform Deployment
 
 on:
@@ -18,16 +13,9 @@ on:
         description: 'The Docker image tag , ECR image URI'
         required: true
         type: string
-<<<<<<< HEAD
->>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
-=======
->>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
