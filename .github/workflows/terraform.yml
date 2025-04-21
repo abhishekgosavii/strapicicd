@@ -1,13 +1,26 @@
+<<<<<<< HEAD
 name: Terraform CI/CD
 
 on:
   push:
     branches:
       - main
+=======
+name: Terraform Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'The Docker image tag , ECR image URI'
+        required: true
+        type: string
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -33,3 +46,73 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/
+=======
+    
+    env:
+      WORKING_DIR: ./terraform
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: "1.5.0"
+
+    - name: Initialize Terraform
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform init
+      
+    - name: Terraform Format Check
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform fmt -check
+
+    - name: Terraform Plan
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform plan -var="image_tag=${{ github.event.inputs.image_tag }}" -out=tfplan
+      
+    - name: Apply Terraform Plan
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform apply -auto-approve tfplan
+
+
+
+# name: CD - Deploy to EC2 with Terraform
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Set up AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v2
+#         with:
+#           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws_region: ${{ secrets.AWS_REGION }}
+
+#       - name: Initialize Terraform
+#         run: terraform init
+
+#       - name: Terraform Plan
+#         run: terraform plan -out=tfplan
+
+#       - name: Terraform Apply
+#         run: terraform apply -auto-approve tfplan
+
+#       - name: Output Docker Image Tag
+#         run: echo "Docker Image: abhishekgosavii2000/my-strapi-app:${{ env.image_tag }}"
+>>>>>>> aa18c5c999512ccc72adeafc272b9a868c4dd08b
