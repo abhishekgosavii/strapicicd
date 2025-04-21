@@ -1,14 +1,17 @@
 name: Terraform Deployment
 
 on:
-  push:
-    branches:
-      - new1  # Automatically triggers on push to 'new1' branch
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'The Docker image tag , ECR image URI'
+        required: true
+        type: string
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
+    
     env:
       WORKING_DIR: ./terraform
 
@@ -30,3 +33,47 @@ jobs:
 
     - name: Initialize Terraform
       working-directory: ${{ env.WORKING_DIR }}
+      run: terraform init
+      
+    - name: Terraform Plan
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform plan -var="image_tag=${{ github.event.inputs.image_tag }}" -out=tfplan
+      
+    - name: Apply Terraform Plan
+      working-directory: ${{ env.WORKING_DIR }}
+      run: terraform apply -auto-approve tfplan
+
+
+
+# name: CD - Deploy to EC2 with Terraform
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Set up AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v2
+#         with:
+#           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws_region: ${{ secrets.AWS_REGION }}
+
+#       - name: Initialize Terraform
+#         run: terraform init
+
+#       - name: Terraform Plan
+#         run: terraform plan -out=tfplan
+
+#       - name: Terraform Apply
+#         run: terraform apply -auto-approve tfplan
+
+#       - name: Output Docker Image Tag
+#         run: echo "Docker Image: abhishekgosavii2000/my-strapi-app:${{ env.image_tag }}"
+
+
