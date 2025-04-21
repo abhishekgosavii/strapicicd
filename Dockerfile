@@ -1,20 +1,45 @@
-# Base image
-FROM node:18-alpine
+FROM node:20-alpine
 
-# Set working directory
+# Install necessary packages using apk
+RUN apk add --no-cache \
+  build-base \
+  python3 \
+  make \
+  g++ \
+  sqlite \
+  sqlite-dev \
+  git
+
+#Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+#Copy package files and install dependencies
 
-# Install dependencies
-RUN npm install --omit=dev
+COPY package.json package-lock.json ./
 
-# Copy the full app
+COPY .env .env
+
+RUN npm install
+
+#Copy the entire Strapi app source code
+
 COPY . .
 
-# Expose default Strapi port
+#Build the Strapi admin panel
+
+RUN npm run build
+
+# Rebuild native modules for architecture compatibility
+RUN npm rebuild better-sqlite3
+
+# Set proper permissions
+RUN chown -R node:node /app
+USER node
+
+#Expose Strapi port
+
 EXPOSE 1337
 
-# Start the app
-CMD ["npm", "start"]
+# Default command to run Strapi
+
+CMD ["npm", "run", "start"]
