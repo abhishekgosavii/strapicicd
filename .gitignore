@@ -46,3 +46,19 @@ Dockerfile
 # Specific files like README, favicon.png, and others are usually safe to include in your repo, so you don't need to ignore them unless they are built/generated
 README.md
 favicon.png
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+# Ignore crash log files
+crash.log
+# Ignore the .terraform directory
+.terraform/
+# Ignore Terraform plan output files
+*.tfplan
+*.tfplan.*
+# Ignore the lock file for provider versions (if you don’t want to commit it)
+.terraform.lock.hcl
+# Ignore Terraform variable override files
+terraform.tfvars
+*.tfvars.json
