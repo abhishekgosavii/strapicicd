@@ -13,7 +13,7 @@ resource "aws_instance" "strapi_ec2" {
   instance_type = var.instance_type
   key_name      = aws_ssm_parameter.key_name.value
 
-    user_data = <<-EOF
+  user_data = <<-EOF
               #!/bin/bash
               set -x
               exec > /var/log/user-data.log 2>&1
