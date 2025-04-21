@@ -1,45 +1,44 @@
-FROM node:20-alpine
+# # Use the official Node.js runtime as a parent image
+# FROM node:20-alpine
 
-# Install necessary packages using apk
-RUN apk add --no-cache \
-  build-base \
-  python3 \
-  make \
-  g++ \
-  sqlite \
-  sqlite-dev \
-  git
+# # Set the working directory inside the container
+# WORKDIR /strapiyml
 
-#Set working directory
-WORKDIR /app
+# # Copy package.json and package-lock.json first (optional but recommended for better caching)
+# COPY package.json package-lock.json ./
 
-#Copy package files and install dependencies
+# # Install dependencies
+# RUN npm install
 
-COPY package.json package-lock.json ./
+# # Copy the rest of the application code into the container
+# COPY . .
 
-COPY .env .env
+# # Expose the port your app runs on (assuming your app uses port 3000)
+# EXPOSE 3000
 
-RUN npm install
+# # Run the application
+# CMD ["npm", "start"]
 
-#Copy the entire Strapi app source code
 
+FROM node:18-alpine
+
+# ✅ Set working directory
+WORKDIR /strapiyml
+
+# ✅ Copy package.json and package-lock.json (if available) to install dependencies
+COPY package*.json ./
+
+# ✅ Install dependencies (production only for production environment)
+RUN npm install --production
+
+# ✅ Copy the rest of the app (excluding files in .dockerignore)
 COPY . .
 
-#Build the Strapi admin panel
-
-RUN npm run build
-
-# Rebuild native modules for architecture compatibility
-RUN npm rebuild better-sqlite3
-
-# Set proper permissions
-RUN chown -R node:node /app
-USER node
-
-#Expose Strapi port
-
+# ✅ Expose Strapi port
 EXPOSE 1337
 
-# Default command to run Strapi
+# ✅ Build the app (optional: use if you're customizing admin panel)
+# RUN npm run build
 
+# ✅ Run Strapi in production mode (for production environment)
 CMD ["npm", "run", "start"]
